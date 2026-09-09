@@ -1,4 +1,16 @@
-import * as path from 'node:path';
+import * as nodePath from 'node:path';
+
+/**
+ * Path helpers that answer for a named platform rather than the host.
+ *
+ * In production `platform` is always `process.platform`, so this matches the
+ * host anyway — but taking the platform as an argument and then normalising
+ * with the host's separator rules would make the argument a half-truth, and
+ * makes Windows behaviour impossible to test from anywhere else.
+ */
+function pathFor(platform: NodeJS.Platform): nodePath.PlatformPath {
+  return platform === 'win32' ? nodePath.win32 : nodePath.posix;
+}
 
 /** Windows and macOS both compare paths case-insensitively in practice. */
 function caseInsensitive(platform: NodeJS.Platform): boolean {
@@ -6,8 +18,10 @@ function caseInsensitive(platform: NodeJS.Platform): boolean {
 }
 
 export function normalizeForCompare(target: string, platform: NodeJS.Platform): string {
-  const normalized = path.normalize(target).replace(/[\\/]+$/, '');
-  return caseInsensitive(platform) ? normalized.toLowerCase() : normalized;
+  const normalized = pathFor(platform).normalize(target);
+  // Strip a trailing separator, but never reduce a root to the empty string.
+  const trimmed = normalized.replace(/(?<=.)[\\/]+$/, '');
+  return caseInsensitive(platform) ? trimmed.toLowerCase() : trimmed;
 }
 
 export function isSamePath(a: string, b: string, platform: NodeJS.Platform): boolean {
@@ -25,6 +39,6 @@ export function isSameOrInside(
   if (a === b) {
     return true;
   }
-  const separator = platform === 'win32' ? '\\' : '/';
+  const separator = pathFor(platform).sep;
   return a.startsWith(b.endsWith(separator) ? b : b + separator);
 }

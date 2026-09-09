@@ -28,3 +28,24 @@ describe('path comparison', () => {
     assert.ok(isSameOrInside('C:\\a\\b\\c', 'C:\\a\\b', 'win32'));
   });
 });
+
+describe('platform independence', () => {
+  // These must give the same answer wherever the suite runs, or the Windows
+  // rules are only ever exercised on a Windows machine.
+  it('applies Windows rules from any host', () => {
+    assert.equal(normalizeForCompare('C:\\Users\\Me\\', 'win32'), 'c:\\users\\me');
+    assert.ok(isSameOrInside('C:\\a\\b\\c', 'C:\\a\\b', 'win32'));
+    assert.ok(!isSameOrInside('C:\\a\\bcd', 'C:\\a\\b', 'win32'));
+  });
+
+  it('applies POSIX rules from any host', () => {
+    assert.equal(normalizeForCompare('/a/b/', 'linux'), '/a/b');
+    assert.ok(isSameOrInside('/a/b/c', '/a/b', 'linux'));
+    assert.ok(!isSameOrInside('/a/bcd', '/a/b', 'linux'));
+  });
+
+  it('does not collapse a filesystem root', () => {
+    assert.equal(normalizeForCompare('/', 'linux'), '/');
+    assert.ok(isSameOrInside('/a', '/', 'linux'));
+  });
+});
