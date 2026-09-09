@@ -74,6 +74,15 @@ suite('Drop In', () => {
     scratch.push(downloads, target);
   });
 
+  test('activates at startup, so the Cmd+V context key is set before it is needed', async () => {
+    // The keybinding's `when` clause requires dropIn.pasteOverride, which only
+    // activate() sets. Without an eager activation event the binding could
+    // never fire, and nothing would ever activate the extension to fix that.
+    const extension = vscode.extensions.getExtension(EXTENSION_ID);
+    assert.ok(extension?.isActive, 'extension should already be active');
+    assert.deepEqual(extension.packageJSON.activationEvents, ['onStartupFinished']);
+  });
+
   test('registers its commands', async () => {
     const commands = await vscode.commands.getCommands(true);
     for (const id of ['dropIn.addFilesHere', 'dropIn.pasteHere', 'dropIn.pasteHereOrDefault']) {
