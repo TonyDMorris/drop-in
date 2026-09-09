@@ -50,7 +50,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx @vscode/vsce package --out drop-in.vsix
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         with:
           name: drop-in-vsix
           path: drop-in.vsix
