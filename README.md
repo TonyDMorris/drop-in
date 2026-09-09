@@ -34,6 +34,8 @@ Right-click any folder in the Explorer — including the project root — and ch
 **Add Files Here…**. Your system's file dialog opens at `~/Downloads`. Select as many files and
 folders as you like, hit Open, and they are copied in.
 
+![Right-clicking a folder, choosing Add Files Here, and picking files from the Downloads folder](assets/demo-picker.gif)
+
 ### 2. Paste Copied Files Here
 
 Select files in **Finder** (or File Explorer, or Nautilus), press <kbd>⌘C</kbd>, then either:
@@ -43,6 +45,8 @@ Select files in **Finder** (or File Explorer, or Nautilus), press <kbd>⌘C</kbd
 
 When the system clipboard holds no files, <kbd>⌘V</kbd> does exactly what it always did, so
 nothing you rely on changes.
+
+![Selecting files in Finder, copying them, then pasting them into a project folder in VS Code](assets/demo-paste.gif)
 
 ## Good to know
 

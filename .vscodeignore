@@ -11,6 +11,8 @@ node_modules/**
 assets/icon.svg
 assets/hero.svg
 assets/icon-256.png
+assets/*.gif
+assets/*.mov
 **/*.ts
 **/*.map
 .gitignore

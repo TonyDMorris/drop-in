@@ -1,41 +1,53 @@
 # Recording the demo GIFs
 
-The README currently leans on the icon and prose. Two short GIFs would sell the extension far
-better on the Marketplace listing. If you record them, drop them at `assets/demo-picker.gif` and
-`assets/demo-paste.gif` and add them under each feature heading in `README.md` — nothing else
-needs to change.
+`assets/demo-picker.gif` and `assets/demo-paste.gif` are cut from a single screen recording at
+1692×944 @ 60fps. The raw capture is gitignored — 26 MB would outweigh the whole source tree in
+every clone — so this is how to redo them from scratch.
 
-## Setup, for both
+## Capture
 
-- A small project in VS Code, Explorer open, `assets/` folder visible.
-- A few real-looking downloads in `~/Downloads` (a PNG, a PDF, a folder).
-- Window at roughly 1280×800, default Dark Modern theme, font size bumped to 15 so it reads at
-  Marketplace width (the listing renders images around 900px wide).
-- Record the VS Code window only, not the whole screen. Trim to under 8 seconds; the Marketplace
-  does not autoplay long clips well.
+One continuous take covering both flows, in this order:
 
-## 1. `demo-picker.gif` — Add Files Here…
+1. Right-click `assets/` in the Explorer → **Add Files Here…** → select a few files in the
+   dialog → **Copy Here**.
+2. Switch to Finder, select a few files, right-click → **Copy**.
+3. Back in VS Code, right-click a folder → **Paste Copied Files Here**.
+4. Open one of the pasted files, so it is obvious they really landed.
 
-1. Right-click `assets/` in the Explorer.
-2. Hover **Add Files Here…** for a beat so the menu item is legible, then click.
-3. In the dialog (already at `~/Downloads`), select two or three files.
-4. Click **Open**. Stop recording once the files appear in the tree.
+macOS <kbd>⌘⇧5</kbd> is enough. Keep the VS Code font size at 15 or so — the Marketplace renders
+README images around 900px wide, and default 12pt is unreadable once scaled down.
 
-## 2. `demo-paste.gif` — Paste Copied Files Here
+Note that whatever is in your Downloads folder, your Finder sidebar, and your desktop will be
+legible in the published GIF.
 
-Show the <kbd>⌘V</kbd> path, since that is the part people will not believe works:
+## Convert
 
-1. Start in Finder, in `~/Downloads`. Select two files, press <kbd>⌘C</kbd> (show the menu, or add
-   a keystroke overlay).
-2. Switch to VS Code.
-3. Click `assets/` once in the Explorer, press <kbd>⌘V</kbd>.
-4. Stop once the files land.
+Always two passes. A single-pass GIF quantises to a generic palette and looks muddy on flat UI
+colours:
 
-A side-by-side of Finder and VS Code works better than a desktop switch here — the whole point is
-that you no longer need to drag between them.
+```bash
+SRC="assets/Screen Recording ….mov"
+F="fps=12,scale=900:-1:flags=lanczos"
 
-## Tools
+ffmpeg -y -ss 0 -t 7.6 -i "$SRC" \
+  -vf "$F,palettegen=max_colors=128:stats_mode=diff" pal.png
+ffmpeg -y -ss 0 -t 7.6 -i "$SRC" -i pal.png \
+  -lavfi "$F[x];[x][1:v]paletteuse=dither=bayer:bayer_scale=5:diff_mode=rectangle" \
+  assets/demo-picker.gif
+```
 
-macOS: [Kap](https://getkap.co) exports GIF directly and can capture a single window. Keep the
-frame rate at 15–20fps and the width at 900px to stay under a couple of megabytes; the Marketplace
-is slow to load anything larger.
+`stats_mode=diff` weights the palette toward what actually changes between frames, which is the
+right trade for a mostly-static screen recording.
+
+## Keeping the size down
+
+GIF has no interframe compression worth the name, so cost scales with *change*, not duration:
+
+- **Trim window transitions.** Dropping a 2s app switch off the front of the paste clip took it
+  from 3.8 MB to 1.1 MB. Nothing else came close to that.
+- A photographic desktop wallpaper is expensive. A plain background would roughly halve it again.
+- Below about 96 palette colours you lose more quality than bytes; fps and width plateau quickly
+  too. Trim first, tune second.
+
+Aim under ~2 MB total. The GIFs are listed in `.vscodeignore` — the rendered README pulls them
+from GitHub raw, so they never travel inside the VSIX.

@@ -4,3 +4,7 @@ dist/
 *.vsix
 .DS_Store
 .vscode-test/
+
+# Source screen recordings: large, and re-recordable (see docs/RECORDING.md).
+# The cut GIFs in assets/ are committed; the raw capture is not.
+assets/*.mov
