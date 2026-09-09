@@ -11,6 +11,11 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
+    # Job level, not step level: a step's own `env:` is not in scope for that
+    # step's `if:`, so guarding on it there skips the step unconditionally.
+    env:
+      VSCE_PAT: ${{ secrets.VSCE_PAT }}
+      OVSX_PAT: ${{ secrets.OVSX_PAT }}
     steps:
       - uses: actions/checkout@v7
 
@@ -38,12 +43,8 @@ jobs:
       # works before any marketplace credentials exist.
       - name: Publish to the VS Code Marketplace
         if: env.VSCE_PAT != ''
-        env:
-          VSCE_PAT: ${{ secrets.VSCE_PAT }}
         run: npx @vscode/vsce publish --packagePath drop-in-${{ github.ref_name }}.vsix
 
       - name: Publish to Open VSX
         if: env.OVSX_PAT != ''
-        env:
-          OVSX_PAT: ${{ secrets.OVSX_PAT }}
         run: npx ovsx publish drop-in-${{ github.ref_name }}.vsix -p "$OVSX_PAT"
