@@ -1,0 +1,49 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test:unit
+      - run: xvfb-run -a npm run test:integration
+
+      - name: Package
+        run: npx @vscode/vsce package --out drop-in-${{ github.ref_name }}.vsix
+
+      - name: Attach the VSIX to a GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: drop-in-${{ github.ref_name }}.vsix
+          generate_release_notes: true
+
+      # Both publish steps are skipped when their token is absent, so tagging
+      # works before any marketplace credentials exist.
+      - name: Publish to the VS Code Marketplace
+        if: env.VSCE_PAT != ''
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+        run: npx @vscode/vsce publish --packagePath drop-in-${{ github.ref_name }}.vsix
+
+      - name: Publish to Open VSX
+        if: env.OVSX_PAT != ''
+        env:
+          OVSX_PAT: ${{ secrets.OVSX_PAT }}
+        run: npx ovsx publish drop-in-${{ github.ref_name }}.vsix -p "$OVSX_PAT"

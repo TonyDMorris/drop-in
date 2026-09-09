@@ -1,0 +1,31 @@
+name: Bug report
+description: Something in Drop In does not work
+labels: [bug]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options: [macOS, Windows, Linux (Wayland), Linux (X11)]
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: VS Code and Drop In versions
+      placeholder: "VS Code 1.121.0, Drop In 0.1.0"
+    validations:
+      required: true
+  - type: checkboxes
+    id: remote
+    attributes:
+      label: Workspace
+      options:
+        - label: This is a remote workspace (SSH, WSL, Dev Container, Codespaces)

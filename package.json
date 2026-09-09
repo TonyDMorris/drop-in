@@ -1,0 +1,155 @@
+{
+  "name": "drop-in",
+  "displayName": "Drop In",
+  "description": "Copy files into your project from the Explorer context menu — pick them from a file dialog, or paste them straight from Finder / File Explorer. No more dragging across screens.",
+  "version": "0.1.0",
+  "publisher": "tonydmorris",
+  "license": "MIT",
+  "author": {
+    "name": "Anthony Morris"
+  },
+  "icon": "assets/icon.png",
+  "galleryBanner": {
+    "color": "#1F2430",
+    "theme": "dark"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TonyDMorris/drop-in.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TonyDMorris/drop-in/issues"
+  },
+  "homepage": "https://github.com/TonyDMorris/drop-in#readme",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "copy files",
+    "paste files",
+    "finder",
+    "explorer",
+    "import",
+    "downloads",
+    "clipboard",
+    "drag and drop",
+    "assets"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "dropIn.addFilesHere",
+        "title": "Add Files Here…",
+        "category": "Drop In"
+      },
+      {
+        "command": "dropIn.pasteHere",
+        "title": "Paste Copied Files Here",
+        "category": "Drop In"
+      },
+      {
+        "command": "dropIn.pasteHereOrDefault",
+        "title": "Paste Copied Files Here (or default paste)",
+        "category": "Drop In"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "dropIn.pasteHereOrDefault",
+          "when": "false"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "dropIn.addFilesHere",
+          "group": "5_cutcopypaste@100",
+          "when": "explorerViewletVisible"
+        },
+        {
+          "command": "dropIn.pasteHere",
+          "group": "5_cutcopypaste@101",
+          "when": "explorerViewletVisible"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "dropIn.pasteHereOrDefault",
+        "key": "ctrl+v",
+        "mac": "cmd+v",
+        "when": "filesExplorerFocus && !inputFocus && !operationInProgress && dropIn.pasteOverride"
+      }
+    ],
+    "configuration": {
+      "title": "Drop In",
+      "properties": {
+        "dropIn.overrideExplorerPaste": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Let `Cmd+V` / `Ctrl+V` in the Explorer paste files copied in Finder or File Explorer. When the operating system clipboard holds no files, VS Code's built-in paste runs as usual."
+        },
+        "dropIn.defaultPickerLocation": {
+          "type": "string",
+          "default": "~/Downloads",
+          "markdownDescription": "Folder the **Add Files Here…** dialog opens at. Use `~` for your home directory. Leave empty to let the dialog reopen wherever you last were."
+        },
+        "dropIn.onConflict": {
+          "type": "string",
+          "default": "prompt",
+          "enum": [
+            "prompt",
+            "keepBoth",
+            "overwrite",
+            "skip"
+          ],
+          "enumDescriptions": [
+            "Ask what to do for each clashing name.",
+            "Always keep both, adding a numeric suffix (photo 2.jpg).",
+            "Always replace the existing file or folder.",
+            "Always leave the existing file or folder untouched."
+          ],
+          "description": "What to do when a file or folder of the same name already exists in the target folder."
+        },
+        "dropIn.confirmBeforeCopy": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show a confirmation listing what will be copied and where, before copying."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "assets": "node scripts/build-assets.mjs",
+    "compile": "node esbuild.mjs",
+    "package": "node esbuild.mjs --production",
+    "watch": "node esbuild.mjs --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src test",
+    "compile-tests": "tsc -p tsconfig.test.json",
+    "test:unit": "npm run compile-tests && mocha \"out/test/unit/**/*.test.js\"",
+    "test:integration": "npm run compile-tests && npm run compile && vscode-test",
+    "test": "npm run test:unit && npm run test:integration",
+    "vsix": "vsce package"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^20.19.9",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^8.20.0",
+    "@typescript-eslint/parser": "^8.20.0",
+    "@vscode/test-cli": "^0.0.15",
+    "@vscode/test-electron": "^3.1.0",
+    "@vscode/vsce": "^3.2.1",
+    "esbuild": "^0.24.2",
+    "eslint": "^9.18.0",
+    "mocha": "^11.0.1",
+    "typescript": "^5.7.3"
+  }
+}

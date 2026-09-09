@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="Drop In">
+  <defs>
+    <linearGradient id="field" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2A3142"/>
+      <stop offset="1" stop-color="#171B26"/>
+    </linearGradient>
+    <linearGradient id="folderFront" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFC061"/>
+      <stop offset="1" stop-color="#F2952B"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="128" height="128" rx="28" fill="url(#field)"/>
+
+  <!-- Back panel of the folder, with the classic tab. -->
+  <path fill="#B5701A"
+        d="M24 44h22a6 6 0 0 1 4.7 2.3l5 6.4a6 6 0 0 0 4.7 2.3H104a6 6 0 0 1 6 6v37a6 6 0 0 1-6 6H24a6 6 0 0 1-6-6V50a6 6 0 0 1 6-6z"/>
+
+  <!-- The file, mid-drop. Drawn between the two folder panels so it reads as
+       going *into* the folder rather than sitting on top of it. -->
+  <g fill="#FFFFFF">
+    <rect x="56" y="16" width="16" height="34" rx="5"/>
+    <path d="M64 74 41.5 51.5a4 4 0 0 1 2.8-6.8h39.4a4 4 0 0 1 2.8 6.8z"/>
+  </g>
+
+  <!-- Front panel, slightly wider at the top so the folder looks open. -->
+  <path fill="url(#folderFront)"
+        d="M20.4 62h87.2a6 6 0 0 1 5.9 7l-5.4 32a6 6 0 0 1-5.9 5H25.8a6 6 0 0 1-5.9-5l-5.4-32a6 6 0 0 1 5.9-7z"/>
+</svg>
