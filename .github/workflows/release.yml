@@ -29,7 +29,7 @@ jobs:
         run: npx @vscode/vsce package --out drop-in-${{ github.ref_name }}.vsix
 
       - name: Attach the VSIX to a GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: drop-in-${{ github.ref_name }}.vsix
           generate_release_notes: true
