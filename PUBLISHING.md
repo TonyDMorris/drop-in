@@ -9,7 +9,7 @@ npm run vsix        # produces drop-in-<version>.vsix
 Then go to <https://marketplace.visualstudio.com/manage>, sign in with your Microsoft account,
 and **upload the `.vsix` through the web UI**. No token, no CLI, no CI needed.
 
-If the publisher `tonydmorris` does not exist yet, create it first at
+If the publisher `TonyMorris` does not exist yet, create it first at
 <https://marketplace.visualstudio.com/manage/createpublisher>. The publisher ID must match the
 `publisher` field in `package.json`.
 

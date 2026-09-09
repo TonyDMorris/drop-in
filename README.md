@@ -6,8 +6,8 @@
 
 **Get files into your VS Code project without dragging them across screens.**
 
-[![Marketplace](https://img.shields.io/visual-studio-marketplace/v/tonydmorris.drop-in?color=1F2430&label=marketplace)](https://marketplace.visualstudio.com/items?itemName=tonydmorris.drop-in)
-[![Installs](https://img.shields.io/visual-studio-marketplace/i/tonydmorris.drop-in?color=1F2430)](https://marketplace.visualstudio.com/items?itemName=tonydmorris.drop-in)
+[![Marketplace](https://img.shields.io/visual-studio-marketplace/v/TonyMorris.drop-in?color=1F2430&label=marketplace)](https://marketplace.visualstudio.com/items?itemName=TonyMorris.drop-in)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/TonyMorris.drop-in?color=1F2430)](https://marketplace.visualstudio.com/items?itemName=TonyMorris.drop-in)
 [![CI](https://github.com/TonyDMorris/drop-in/actions/workflows/ci.yml/badge.svg)](https://github.com/TonyDMorris/drop-in/actions/workflows/ci.yml)
 
 </div>

@@ -3,7 +3,7 @@
   "displayName": "Drop In",
   "description": "Copy files into your project from the Explorer context menu — pick them from a file dialog, or paste them straight from Finder / File Explorer. No more dragging across screens.",
   "version": "0.1.0",
-  "publisher": "tonydmorris",
+  "publisher": "TonyMorris",
   "license": "MIT",
   "author": {
     "name": "Anthony Morris"
